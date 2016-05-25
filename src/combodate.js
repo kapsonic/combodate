@@ -45,7 +45,7 @@
                 ampm:   ['[Aa]', '']
             };
 
-            this.$widget = $('<span class="combodate"></span>').html(this.getTemplate());
+            this.$widget = $('<div class="combodate"></div>').html(this.getTemplate());
 
             this.initCombos();
 
@@ -79,7 +79,10 @@
             var tpl = this.options.template;
             var inputDisabled = this.$element.prop('disabled');
             var customClass = this.options.customClass;
+            var parent = this.options.parent;
+            var parentClass = this.options.parentClass;
 
+            var isInParent = parent.length > 0;
             //first pass
             $.each(this.map, function(k, v) {
                 v = v[0];
@@ -96,9 +99,14 @@
             $.each(this.map, function(k, v) {
                 v = v[0];
                 var token = v.length > 1 ? v.substring(1, 2) : v;
+                if(isInParent) {
+                  tpl = tpl.replace('{'+token+'}', '<'+parent+' class="'+parentClass+'"><select class="'+k+' '+customClass +'"'+
+                       (inputDisabled ? ' disabled="disabled"' : '')+'></select></'+parent+'>');
+                } else {
+                  tpl = tpl.replace('{'+token+'}', '<select class="'+k+' '+customClass +'"'+
+                       (inputDisabled ? ' disabled="disabled"' : '')+'></select>');
+                }
 
-                tpl = tpl.replace('{'+token+'}', '<select class="'+k+' '+customClass +'"'+
-                     (inputDisabled ? ' disabled="disabled"' : '')+'></select>');
             });
 
             return tpl;
@@ -518,7 +526,9 @@
         errorClass: null,
         customClass: '',
         roundTime: true, // whether to round minutes and seconds if step > 1
-        smartDays: false // whether days in combo depend on selected month: 31, 30, 28
+        smartDays: false // whether days in combo depend on selected month: 31, 30, 28,
+        parent: '',
+        parentClass: '',
     };
 
 }(window.jQuery));
