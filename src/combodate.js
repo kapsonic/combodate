@@ -63,7 +63,10 @@
                 }
             }, this));
 
-            this.$widget.find('select').css('width', 'auto');
+            if(!this.options.useWithBootstrap) {
+                this.$widget.find('select').css('width', 'auto');
+            }
+
 
             // hide original input and insert widget
             this.$element.hide().after(this.$widget);
@@ -99,9 +102,9 @@
             $.each(this.map, function(k, v) {
                 v = v[0];
                 var token = v.length > 1 ? v.substring(1, 2) : v;
-                if(isInParent) {
-                  tpl = tpl.replace('{'+token+'}', '<'+parent+' class="'+parentClass+'"><select class="'+k+' '+customClass +'"'+
-                       (inputDisabled ? ' disabled="disabled"' : '')+'></select></'+parent+'>');
+                if(this.options.useWithBootstrap) {
+                  tpl = tpl.replace('{'+token+'}', '<div class="'+parentClass+'"><select class="'+k+' '+customClass +'"'+
+                       (inputDisabled ? ' disabled="disabled"' : '')+'></select></div>');
                 } else {
                   tpl = tpl.replace('{'+token+'}', '<select class="'+k+' '+customClass +'"'+
                        (inputDisabled ? ' disabled="disabled"' : '')+'></select>');
@@ -526,9 +529,9 @@
         errorClass: null,
         customClass: '',
         roundTime: true, // whether to round minutes and seconds if step > 1
-        smartDays: false // whether days in combo depend on selected month: 31, 30, 28,
-        parent: '',
-        parentClass: '',
+        smartDays: false, // whether days in combo depend on selected month: 31, 30, 28,
+        useWithBootstrap: false,
+        parentClass: 'col-xs-4'
     };
 
 }(window.jQuery));
