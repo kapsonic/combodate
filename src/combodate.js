@@ -44,8 +44,8 @@
                 second: ['s',    'seconds'],
                 ampm:   ['[Aa]', '']
             };
-
-            this.$widget = $('<div class="combodate"></div>').html(this.getTemplate());
+            var rowClass = this.options.useWithBootstrap ? 'row' : '';
+            this.$widget = $('<div class="combodate '+rowClass+ '"></div>').html(this.getTemplate());
 
             this.initCombos();
 
@@ -82,10 +82,11 @@
             var tpl = this.options.template;
             var inputDisabled = this.$element.prop('disabled');
             var customClass = this.options.customClass;
-            var parent = this.options.parent;
-            var parentClass = this.options.parentClass;
 
-            var isInParent = parent.length > 0;
+            var parentClass = this.options.parentClass;
+            var useWithBootstrap = this.options.useWithBootstrap;
+
+            // var isInParent = parent.length > 0;
             //first pass
             $.each(this.map, function(k, v) {
                 v = v[0];
@@ -96,14 +97,14 @@
             });
 
             //replace spaces with &nbsp;
-            tpl = tpl.replace(/ /g, '&nbsp;');
+            // tpl = tpl.replace(/ /g, '&nbsp;');
 
             //second pass
             $.each(this.map, function(k, v) {
                 v = v[0];
                 var token = v.length > 1 ? v.substring(1, 2) : v;
-                if(this.options.useWithBootstrap) {
-                  tpl = tpl.replace('{'+token+'}', '<div class="'+parentClass+'"><select class="'+k+' '+customClass +'"'+
+                if(useWithBootstrap) {
+                  tpl = tpl.replace('{'+token+'}', '<div class="'+parentClass+'"><select class="'+k+' form-control '+customClass +'"'+
                        (inputDisabled ? ' disabled="disabled"' : '')+'></select></div>');
                 } else {
                   tpl = tpl.replace('{'+token+'}', '<select class="'+k+' '+customClass +'"'+
